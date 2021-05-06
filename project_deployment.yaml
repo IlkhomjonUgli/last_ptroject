@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-web-app
+spec:
+  selector:
+    matchLabels:
+      run: node-web-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: node-web-app
+    spec:
+      containers:
+      - name: node-web-app
+        image: samjamaloff/node-web-app
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-web-app
+  labels:
+    run: node-web-app
+spec:
+  ports:
+  - port: 80
+  selector:
+    run: node-web-app
